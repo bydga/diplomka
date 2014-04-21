@@ -1,0 +1,152 @@
+ES
+
+curl -XPUT 'http://localhost:9200/linkedin/post/_mapping' -d '
+{
+    "post" : {
+        "properties" : {
+            "postDate" : {"type" : "date" },
+            "body" : {"type" : "string", "index": "analyzed"},
+            "postTags" : {"type" : "string", "analyzer": "keyword"}
+        }
+    }
+}
+'
+
+
+NO MAPPING
+bulk   ADDED 9947 documents avg length:992 chars in 2561 ms
+by one ADDED 9947 documents avg length:992 chars in 8057 ms
+
+Starting queries
+Starting queries
+Starting queries
+writing thread put to sleep
+start writing
+ADDED 9947 documents avg length:992 chars in 12552 ms
+writing done
+Ending queries
+Ending queries
+Ending queries
+Made total of 20793 queries in 3 threads + one writing, avg response 13ms, total running time 32567
+
+
+MAPPING
+ADDED 9947 documents avg length:992 chars in 5407 ms
+
+Starting queries
+Starting queries
+Starting queries
+writing thread put to sleep
+start writing
+ADDED 9947 documents avg length:992 chars in 7838 ms
+writing done
+Ending queries
+Ending queries
+Ending queries
+Made total of 62655 queries in 3 threads + one writing, avg response 3ms, total running time 27846
+
+Starting queries
+Starting queries
+Starting queries
+writing thread put to sleep
+start writing
+ADDED 9947 documents avg length:992 chars in 8235 ms
+writing done
+Ending queries
+Ending queries
+Ending queries
+Made total of 39987 queries in 3 threads + one writing, avg response 5ms, total running time 28244
+
+Starting queries
+Starting queries
+Starting queries
+writing thread put to sleep
+start writing
+ADDED 9947 documents avg length:992 chars in 8280 ms
+writing done
+Ending queries
+Ending queries
+Ending queries
+Made total of 25832 queries in 3 threads + one writing, avg response 9ms, total running time 28289
+
+
+Starting queries
+Starting queries
+Starting queries
+writing thread put to sleep
+start writing
+ADDED 9947 documents avg length:992 chars in 7123 ms
+writing done
+Ending queries
+Ending queries
+Ending queries
+Made total of 25573 queries in 3 threads + one writing, avg response 9ms, total running time 27130
+
+Starting queries
+Starting queries
+writing thread put to sleep
+Starting queries
+start writing
+ADDED 9947 documents avg length:992 chars in 8986 ms
+writing done
+Ending queries
+Ending queries
+Ending queries
+Made total of 29408 queries in 3 threads + one writing, avg response 8ms, total running time 29004
+
+
+
+
+
+
+
+
+
+ES insert by single
+Starting queries
+Starting queries
+Starting queries
+writing thread put to sleep
+start writing
+ADDED 9947 documents avg length:992 chars in 38602 ms
+writing done
+Ending queries
+Ending queries
+Ending queries
+Made total of 46686 queries in 3 threads + one writing, avg response 10ms, total running time 58608
+
+
+
+
+SOLR
+bulk    ADDED 9947 documents avg length:992 chars in 6754 ms
+
+
+Starting queries
+Starting queries
+Starting queries
+writing thread put to sleep
+start writing
+ADDED 9947 documents avg length:992 chars in 7365 ms
+writing done
+Ending queries
+Ending queries
+Ending queries
+Made total of 65865 queries in 3 threads + one writing, avg response 3ms, total running time 27373
+
+
+
+
+
+SOLR insert by single
+Starting queries
+Starting queries
+Starting queries
+writing thread put to sleep
+start writing
+ADDED 9947 documents avg length:992 chars in 250316 ms
+writing done
+Ending queries
+Ending queries
+Ending queries
+Made total of 745986 queries in 3 threads + one writing, avg response 3ms, total running time 270322

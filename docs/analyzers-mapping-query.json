@@ -1,0 +1,724 @@
+CREATE INDEX dev
+POST localhost:9200/production
+
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 5,
+      "number_of_replicas": 0
+    },
+    "analysis": {
+      "analyzer": {
+        "whitespace_ngram_analyzer": {
+          "type": "custom",
+          "tokenizer": "whitespace",
+          "filter": [
+            "lowercase",
+            "stop",
+            "asciifolding",
+            "edge_ngram"
+          ]
+        },
+        "standard_stem_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "standard",
+            "lowercase",
+            "stop",
+            "eng_stem"
+          ]
+        },
+        "standard_snowball_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "standard",
+            "lowercase",
+            "stop",
+            "eng_snowball"
+          ]
+        },
+        "whitespace_stem_analyzer": {
+          "type": "custom",
+          "tokenizer": "whitespace",
+          "filter": [
+            "standard",
+            "lowercase",
+            "stop",
+            "eng_stem"
+          ]
+        },
+        "whitespace_snowball_analyzer": {
+          "type": "custom",
+          "tokenizer": "whitespace",
+          "filter": [
+            "standard",
+            "lowercase",
+            "stop",
+            "eng_snowball"
+          ]
+        },
+        "whitespace_synonym_analyzer": {
+          "type": "custom",
+          "tokenizer": "whitespace",
+          "filter": [
+            "standard",
+            "lowercase",
+            "stop",
+            "eeg_synonym",
+            "eng_snowball"
+          ]
+        },
+        "standard_synonym_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "standard",
+            "lowercase",
+            "stop",
+            "eeg_synonym",
+            "eng_snowball"
+          ]
+        }
+      },
+      "filter": {
+        "edge_ngram": {
+          "type": "edge_ngram",
+          "min_gram": 2,
+          "max_gram": 20
+        },
+        "eng_stem": {
+          "type": "stemmer",
+          "name": "english"
+        },
+        "eng_snowball": {
+          "type": "snowball",
+          "language": "English"
+        },
+        "eeg_synonym": {
+          "type": "synonym",
+          "synonyms_path": "synonyms.txt"
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+create index production
+
+
+{
+  "settings": {
+    "index": {
+      "number_of_shards": 5,
+      "number_of_replicas": 0
+    },
+    "analysis": {
+      "analyzer": {
+        "standard_snowball_analyzer": {
+          "type": "custom",
+          "tokenizer": "standard",
+          "filter": [
+            "standard",
+            "lowercase",
+            "stop",
+            "eeg_synonym",
+            "eng_snowball"
+          ]
+        }
+      },
+      "filter": {
+        "eng_snowball": {
+          "type": "snowball",
+          "language": "English"
+        },
+        "eeg_synonym": {
+          "type": "synonym",
+          "synonyms_path": "/home/elasticsearch/synonyms.txt"
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+PUT MAPPING multi
+
+PUT localhost:9200/production/experiment/_mapping
+{
+  "experiment": {
+    "dynamic": "strict",
+    "properties": {
+      "experimentId": {
+        "type": "string"
+      },
+      "groupId": {
+        "type": "integer"
+      },
+      "params": {
+        "type": "nested",
+        "properties": {
+          "attributes": {
+            "type": "nested",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "multi_field",
+                "fields": {
+                  "value": {
+                    "type": "string",
+                    "index": "analyzed"
+                  },
+                  "whitespace_ngram": {
+                    "type": "string",
+                    "index_analyzer": "whitespace_ngram_analyzer"
+                  },
+                  "standard_stem": {
+                    "type": "string",
+                    "index_analyzer": "standard_stem_analyzer"
+                  },
+                  "standard_snowball": {
+                    "type": "string",
+                    "index_analyzer": "standard_snowball_analyzer"
+                  },
+                  "whitespace_stem": {
+                    "type": "string",
+                    "index_analyzer": "whitespace_stem_analyzer"
+                  }
+                }
+              }
+            }
+          },
+          "name": {
+            "type": "string"
+          },
+          "valueInteger": {
+            "type": "integer"
+          },
+          "valueString": {
+            "type": "multi_field",
+            "fields": {
+              "whitespace_ngram": {
+                "type": "string",
+                "index_analyzer": "whitespace_ngram_analyzer"
+              },
+              "valueString": {
+                "type": "string",
+                "index_analyzer": "standard_stem_analyzer"
+              },
+              "standard_snowball": {
+                "type": "string",
+                "index_analyzer": "standard_snowball_analyzer"
+              },
+              "whitespace_stem": {
+                "type": "string",
+                "index_analyzer": "whitespace_stem_analyzer"
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+put MAPPING production
+{
+  "experiment": {
+    "dynamic": "strict",
+    "properties": {
+      "experimentId": {
+        "type": "string"
+      },
+      "groupId": {
+        "type": "integer"
+      },
+      "params": {
+        "type": "nested",
+        "properties": {
+          "attributes": {
+            "type": "nested",
+            "properties": {
+              "name": {
+                "type": "string"
+              },
+              "value": {
+                "type": "string",
+                "analyzer": "standard_snowball_analyzer"
+
+              }
+            }
+          },
+          "name": {
+            "type": "string",
+            "index": "not_analyzed"
+          },
+          "valueInteger": {
+            "type": "double"
+          },
+          "valueString": {
+            "type": "string",
+                "analyzer": "standard_snowball_analyzer"
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+query
+
+
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "nested": {
+            "path": "params",
+            "query": {
+              "bool": {
+                "must": [
+                  {
+                    "match": {
+                      "params.name": "hardware"
+                    }
+                  },
+                  {
+                    "match": {
+                      "params.valueString": "yyy"
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        {
+          "nested": {
+            "path": "params.attributes",
+            "query": {
+              "match": {
+                "params.attributes.value": "low"
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+
+
+filter
+
+
+{
+  "filter": {
+    "nested": {
+      "path": "parameters",
+      "filter": {
+        "and": [
+          {
+            "bool": {
+              "must": [
+                {
+                  "term": {
+                    "parameters.name": "temperature"
+                  }
+                },
+                {
+                  "range": {
+                    "parameters.value_integer": {
+                      "gt": 21
+                    }
+                  }
+                }
+              ]
+            }
+          },
+          {
+            "bool": {
+              "must": [
+                {
+                  "term": {
+                    "parameters.name": "temperature"
+                  }
+                },
+                {
+                  "range": {
+                    "parameters.value_integer": {
+                      "lt": 80
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  }
+}
+
+
+
+
+
+explicit analyzer
+
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "nested": {
+            "path": "params",
+            "query": {
+              "bool": {
+                "must": [
+                  {
+                    "match": {
+                      "params.name": "hardware"
+                    }
+                  },
+                  {
+                    "match": {
+                      "params.valueString": {
+                        "query": "channels",
+                        "analyzer": "standard_stem_analyzer"
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+
+
+
+
+
+
+
+WORKING BUT SLOW
+{
+  "filter": {
+    "and": [
+      {
+        "nested": {
+          "path": "params",
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "match": {
+                    "params.name": "temperature"
+                  }
+                },
+                {
+                  "range": {
+                    "params.valueInteger": {
+                      "gt": 21,
+                      "lt": 23
+                    }
+                  }
+                }
+              ]
+            }
+          }
+        }
+      },
+      {
+        "nested": {
+          "path": "params",
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "term": {
+                    "params.name": "weather"
+                  }
+                },
+                {
+                  "match": {
+                    "params.valueString": "standard"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    ]
+  }
+}
+
+
+
+
+
+
+
+
+FILTERED BY DRBAL
+{
+  "query": {
+    "filtered": {
+      "query": {
+        "match_all": {}
+      },
+      "filter": {
+        "bool": {
+          "must": [
+            {
+              "nested": {
+                "path": "params",
+                "filter": {
+                  "bool": {
+                    "must": [
+                      {
+                        "term": {
+                          "params.name": "temperature"
+                        }
+                      },
+                      {
+                        "range": {
+                          "params.valueInteger": {
+                            "gt": 21,
+                            "lt": 23
+                          }
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            },
+            {
+              "nested": {
+                "path": "params",
+                "filter": {
+                  "bool": {
+                    "must": [
+                      {
+                        "term": {
+                          "params.name": "weather"
+                        }
+                      },
+                      {
+                        "term": {
+                          "params.valueString": "standard"
+                        }
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+NESTEDD MUST_NOT
+{
+  "query": {
+    "bool": {
+      "must_not": {
+        "nested": {
+          "path": "params",
+          "query": {
+            "bool": {
+              "must": {
+                "match": {
+                  "params.valueString": "necum"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+{
+  "query": {
+    "bool": {
+      "must_not": {
+        "nested": {
+          "path": "params",
+          "query": {
+            "bool": {
+              "must": [
+                {
+                  "match": {
+                    "params.valueString": "red"
+                  }
+                },
+                {
+                  "term": {
+                    "params.name": "hardware"
+                  }
+                }
+              ]
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+{
+  "and" : {
+    "filters" : [ {
+      "nested" : {
+        "query" : {
+          "bool" : {
+            "must" : [ {
+              "term" : {
+                "params.name" : "hardware"
+              }
+            }, {
+              "match" : {
+                "params.valueString" : {
+                  "query" : "red",
+                  "type" : "boolean"
+                }
+              }
+            } ]
+          }
+        },
+        "path" : "params"
+      }
+    }, {
+      "nested" : {
+        "query" : {
+          "bool" : {
+            "must" : [ {
+              "term" : {
+                "params.name" : "software"
+              }
+            }, {
+              "match" : {
+                "params.valueString" : {
+                  "query" : "blue",
+                  "type" : "boolean"
+                }
+              }
+            } ]
+          }
+        },
+        "path" : "params"
+      }
+    }, {
+      "bool" : {
+        "must_not" : {
+          "nested" : {
+            "query" : {
+              "bool" : {
+                "must" : [ {
+                  "term" : {
+                    "params.name" : "nohardware"
+                  }
+                }, {
+                  "match" : {
+                    "params.valueString" : {
+                      "query" : "xxx",
+                      "type" : "boolean"
+                    }
+                  }
+                } ]
+              }
+            },
+            "path" : "params"
+          }
+        }
+      }
+    } ]
+  }
+}
+
+
+
+
+{
+filter: {
+  and: {
+    filters: [
+    {
+      nested: {
+        path: "params",
+        query: { bool: { must: [
+          { term: {params.name : "hardware"}},
+          { match: {params.valueString : {query: "intel"}}}
+        ]}}
+      }
+    }, {
+      nested: {
+        path: "params",
+        query: { bool: { must: [
+          { term: { params.name : "software" }},
+          { match: { params.valueString : { query: "corel" }}}
+         ]}},
+      }
+    }, {
+      bool: { must_not: {
+         nested: {
+           query: {bool: {must: [
+             { term: { params.name : "hardware" }},
+             { match: { params.valueString : { query: "brainvision" }}}
+           ]}},
+         }
+       }
+     }
+}]}}

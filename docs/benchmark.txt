@@ -1,0 +1,140 @@
+RESULTS
+
+insert 100x file with mapping
+ES:   inserted 994700 in 322 693 ms
+SOLR: inserted 994700 in 313 864 ms
+
+
+ES
+size: 1.3gb (1.3gb)
+docs: 995 227 (995 227)
+
+
+
+
+1M docs, 3 threads intense reading, 1 writing 2docs/s. writing has 2s delay
+ES
+Read queries: Total 657 queries in 22028ms, took: 20339 ms
+Read queries: Total 674 queries in 22029ms, took: 20289 ms
+Read queries: Total 666 queries in 22032ms, took: 20409 ms
+written total of 40docs. time without sleep: 243
+
+
+Read queries: Total 755 queries in 22026ms, took: 20257 ms
+Read queries: Total 761 queries in 22032ms, took: 20179 ms
+Read queries: Total 743 queries in 22034ms, took: 20365 ms
+written total of 40docs. time without sleep: 228
+
+SOLR
+Read queries: Total 6740 queries in 22012ms, took:21916
+Read queries: Total 6755 queries in 22015ms, took:21944
+Read queries: Total 6723 queries in 22015ms, took:21938
+written total of 38docs. time without sleep: 1167
+
+Read queries: Total 8070 queries in 22008ms, took:21921
+Read queries: Total 8068 queries in 22009ms, took:21931
+Read queries: Total 8067 queries in 22009ms, took:21934
+written total of 38docs. time without sleep: 1066
+
+
+
+
+1M docs, 3 threads intense reading, 1 writing 20docs/s writing has 2s delay after readers
+ES
+Read queries: Total 779 queries in 22030ms, took: 20387 ms
+Read queries: Total 775 queries in 22029ms, took: 20386 ms
+Read queries: Total 771 queries in 22036ms, took: 20429 ms
+written total of 367docs. time without sleep: 1313
+
+
+SOLR
+Read queries: Total 5414 queries in 22018ms, took:21938
+Read queries: Total 5404 queries in 22018ms, took:21948
+Read queries: Total 5413 queries in 22018ms, took:21931
+written total of 269docs. time without sleep: 6412
+
+Read queries: Total 4973 queries in 22014ms, took:21955
+Read queries: Total 4981 queries in 22015ms, took:21949
+Read queries: Total 4985 queries in 22016ms, took:21940
+written total of 263docs. time without sleep: 6710
+
+
+
+
+
+
+
+1Mdocs, 3 threads read, 1 thread write with 5ms sleep
+
+SOLR
+Read queries: Total 1091 queries in 30002ms, took:29978
+Read queries: Total 1099 queries in 30015ms, took:29976
+Read queries: Total 1096 queries in 30019ms, took:29974
+written total of 867docs. time without sleep: 24987
+
+ES
+Read queries: Total 1016 queries in 29990ms, took:29967
+Read queries: Total 1001 queries in 30009ms, took:29987
+Read queries: Total 1020 queries in 30009ms, took:29986
+written total of 801docs. time without sleep: 25327
+
+
+
+
+
+
+1Mdocs, 3 threads read, 1 thread write with 5ms sleep, same start
+
+
+ES
+Read queries: Total 913 queries in 29985ms, took: 27821 ms
+Read queries: Total 896 queries in 29991ms, took: 27955 ms
+Read queries: Total 920 queries in 29992ms, took: 27759 ms
+written total of 59docs. time without sleep: 591
+
+
+SOLR
+Read queries: Total 11548 queries in 29986ms, took:29889
+Read queries: Total 11546 queries in 29986ms, took:29891
+Read queries: Total 11549 queries in 29986ms, took:29909
+written total of 57docs. time without sleep: 1723
+
+
+
+
+
+
+1M docs 3 threads read, + 1 write, no sleep same start
+
+
+
+
+SOLR
+written total of 530docs. time without sleep: 29949
+Read queries: Total 1232 queries in 30011ms, took:29970
+Read queries: Total 1254 queries in 30009ms, took:29973
+Read queries: Total 1241 queries in 30017ms, took:29970
+
+Read queries: Total 1183 queries in 30003ms, took:29961
+written total of 773docs. time without sleep: 29945
+Read queries: Total 1176 queries in 30004ms, took:29974
+Read queries: Total 1192 queries in 30004ms, took:29961
+
+ES
+written total of 9789docs. time without sleep: 29770
+Read queries: Total 905 queries in 30003ms, took: 28778 ms
+Read queries: Total 891 queries in 30011ms, took: 28707 ms
+Read queries: Total 881 queries in 30012ms, took: 28790 ms
+
+written total of 9663docs. time without sleep: 29678
+Read queries: Total 686 queries in 30003ms, took: 28494 ms
+Read queries: Total 729 queries in 30007ms, took: 28598 ms
+Read queries: Total 736 queries in 30004ms, took: 28659 ms
+
+
+
+
+
+
+
+
